@@ -52,7 +52,7 @@ $(document).ready(function() {
                 for(var j=0;j<_group.sections.length;++j){
                     const section_bounding_box = new THREE.Box3();
                     const pano_container = new THREE.Group();
-                    const _section = _group.sections[i];
+                    const _section = _group.sections[j];
 
                     group_elevation = Math.min(group_elevation, _section.elevation);
                     
