@@ -17,7 +17,7 @@
   }
   ...
 ```
-* Use **window.postMessage()** javascript method when an event is sent to the Player and the argument is a serialized json string representing the event structure.
+* Use **window.postMessage()** javascript method when an event is sent to the Player and the argument should be a serialized json string representing the event structure.
 * In the sample, [Json.NET](https://www.newtonsoft.com/json) is used for serialization.
 ```csharp
   dynamic event_to_send = new ExpandoObject();
