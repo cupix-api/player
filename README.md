@@ -6,5 +6,7 @@ As well as an iframe on a web page, this bidirectional event messaging is suppor
 
 # Samples
 [iframe live demo](https://cupix-api.github.io/player)
-The source code is available under the docs folder.
+The source code is available under the [docs](https://github.com/cupix-api/player/tree/master/docs)
+folder.
+.NET sample is available under [WinForms .NET sample](https://github.com/cupix-api/player/tree/master/WinForms%20.NET%20sample)
 # API Reference
