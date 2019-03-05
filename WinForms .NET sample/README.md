@@ -23,9 +23,9 @@
   dynamic event_to_send = new ExpandoObject();
   event_to_send.ver = 2;
   event_to_send.caller = ".Net Cupix Player API Example App";
-  event_to_send.sender = sender;
+  event_to_send.sender = "ObjectHandler";
   ...
   string event_str = JsonConvert.SerializeObject(event_to_send);
-  string script = string.Format("window.postMessage('{0}','*')", args_str); 
+  string script = string.Format("window.postMessage('{0}','*')", event_str); 
   webChromeBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
 ```
