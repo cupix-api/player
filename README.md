@@ -5,4 +5,6 @@ Cupix Player API allows developers to easily integrate the Cupix Player within n
 As well as an iframe on a web page, this bidirectional event messaging is supported on .NET, iOS, and Android applications using a web component like CefSharp (.NET), WKWebView (iOS), or WebVie (Android).
 
 # Samples
+[iframe live demo](https://cupix-api.github.io/player)
+The source code is available under the docs folder.
 # API Reference
