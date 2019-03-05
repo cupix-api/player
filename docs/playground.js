@@ -1,6 +1,3 @@
-//o4YS4JNF
-//WXlfARft
-
 $(document).ready(function() {
     if ( WEBGL.isWebGLAvailable() === false ) {
         document.body.appendChild( WEBGL.getWebGLErrorMessage() );
@@ -800,7 +797,8 @@ $(document).ready(function() {
                 viewController.handleObjectEventsFromPlayer(event_type, event_args);
             break;
             case "TransitHandler":
-                if(event_type == "PanoCompleted"){
+            debugger;
+                if(event_type == "PanoStarted"){
                 }else if(event_type == "PanoCompleted"){
                     viewController.activePano = event_args.id;
                 }
@@ -925,7 +923,7 @@ $(document).ready(function() {
         
         if(viewController != null)
             viewController.clear();
-            
+
         viewController = null;
         customObjManager = null;
         boxDragInteraction = null;
