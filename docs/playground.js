@@ -797,7 +797,6 @@ $(document).ready(function() {
                 viewController.handleObjectEventsFromPlayer(event_type, event_args);
             break;
             case "TransitHandler":
-            debugger;
                 if(event_type == "PanoStarted"){
                 }else if(event_type == "PanoCompleted"){
                     viewController.activePano = event_args.id;
