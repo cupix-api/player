@@ -21,7 +21,7 @@
 * In the sample, [Json.NET](https://www.newtonsoft.com/json) is used for serialization.
 ```csharp
   dynamic event_to_send = new ExpandoObject();
-  event_to_send.ver = 2;
+  event_to_send.ver = "2";
   event_to_send.caller = ".Net Cupix Player API Example App";
   event_to_send.sender = "ObjectHandler";
   ...
