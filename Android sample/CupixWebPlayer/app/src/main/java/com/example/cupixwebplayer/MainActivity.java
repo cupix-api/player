@@ -49,17 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // webView.loadUrl("http://players.cupix.com/p/ruHO8MyM");
-        webView.loadUrl("http://player-stage.cupix.com/p/r8qivuws");
-
-//        class CupixEventListener {
-//            @JavascriptInterface
-//            public void update(String eventType, String eventName, String arg) {
-//                Log.d("event log", "[CUPIX-EVENT][" + eventType + "] " +  eventName + ": " + arg);
-//            }
-//        }
-//        webView.addJavascriptInterface(new CupixEventListener(), "cupixEventListener");
-
+        webView.loadUrl("https://players.cupix.com/p/bUVnYXBp");
         class CupixEventListenerV2 {
             @JavascriptInterface
             public void update(String sender, String type, String args, String ver, String playerId, String caller) {
