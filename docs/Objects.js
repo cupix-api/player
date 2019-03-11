@@ -25,6 +25,7 @@ class TourModel{
             this._section_hash_table[_group.id] = section_group;
             section_group.cupixID = _group.id;
             section_group.name = _group.name;
+            section_group.type = "group";
             const group_bounding_box = new THREE.Box3();
 
             // Lowest elevation among sections
@@ -55,7 +56,8 @@ class TourModel{
                         pos, new THREE.Vector3(pos.x, pos.y, 0.0), 
                         new THREE.LineDashedMaterial( { color: col, dashSize: 0.2, gapSize: 0.05 } )
                     ));
-                    
+                    pano_sphere.type = "pano";
+
                     section_bounding_box.expandByPoint(pos);
     
                     // Set the cross reference
@@ -65,7 +67,7 @@ class TourModel{
                 }
                 group_bounding_box.expandByPoint (section_bounding_box.min);
                 group_bounding_box.expandByPoint (section_bounding_box.max);
-
+                pano_container.type = "section";
                 section_group.add(pano_container);
             }
 
@@ -342,7 +344,11 @@ class CustomObjectManager{
         this.removeFromPlayer(obj.cupixID);
         let so = obj.sceneObject;
         if(so){
-            this._view_controller.scene.remove(so);
+            if(so.parent)
+                so.parent.remove(so);
+            else
+                this._view_controller.scene.remove(so);
+                
             so.geometry.dispose();
             so.material.dispose();
             obj.sceneObject = null;
