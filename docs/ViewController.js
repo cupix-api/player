@@ -160,7 +160,7 @@ class SceneViewController{
         var intersects = this._ray_caster.intersectObjects( this.activeGroup.children, true );
         var found = false;
         for(var i=0;i<intersects.length;++i){
-            if(intersects[i].object.cupixID != undefined){
+            if(intersects[i].object.type != undefined && intersects[i].object.type == "pano"){
                 if ( this._pano_on_mouse != intersects[i].object ) {
                     this._pano_on_mouse = intersects[i].object;
                     this.highlightObject(this._pano_on_mouse);
