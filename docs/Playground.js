@@ -101,11 +101,11 @@ $(document).ready(function() {
                 App.addDim();
             break;
             case "Measure - Pick Floor Method":
-                App.printToConsole("Measure a dist in the Player by picking points on the floor.");
+                App.printToConsole("Measure dist in the Player by picking points on the floor.");
                 App.measureDim("pick_on_floor");
             break;
             case "Measure - Two Pano Method":
-                App.printToConsole("Measure a dist in the Player by picking points using 2-pano matching point method.");
+                App.printToConsole("Measure dist in the Player by picking points using 2-pano matching point method.");
                 App.measureDim("pick_2_panos");
             break;
             case "Cancel":
