@@ -15,7 +15,7 @@ namespace Send_and_Receive_Messages
 
         public PostObjectForJS(string sender, string type, ExpandoObject args)
         {
-            _event_to_send.ver = 2;
+            _event_to_send.ver = "2";
             _event_to_send.caller = ".Net Cupix Player API Example App";
             _event_to_send.sender = sender;
             _event_to_send.type = type;
