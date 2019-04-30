@@ -25,7 +25,7 @@ class ViewController: UIViewController, WKScriptMessageHandler {
 
 		self.webView = WKWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), configuration: webCfg)
 		// let url = URL(string: "http://players.cupix.com/p/ruHO8MyM")
-		let url = URL(string: "http://player-dev.cupix.com/p/5Brgte3Z")
+		let url = URL(string: "https://players.cupix.com/p/bUVnYXBp")
 		webView.load(URLRequest(url:url!))
 
 		self.view = self.webView

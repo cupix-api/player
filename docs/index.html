@@ -2,7 +2,8 @@
 	<head>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-T5jhQKMh96HMkXwqVMSjF3CmLcL1nT9//tCqu9By5XSdj7CwR0r+F3LTzUdfkkQf" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/101/three.min.js"></script>
         <script type = "text/javascript" src = "./WebGL.js"></script>
@@ -10,7 +11,10 @@
         <script type = "text/javascript" src = "./OrbitControls.js"></script>
         <script type = "text/javascript" src = "./DragControls.js"></script>
         <script type = "text/javascript" src = "./TransformControls.js"></script>
-        <script type = "text/javascript" src = "./playground.js"></script>
+        <script type = "text/javascript" src = "./Objects.js"></script>
+        <script type = "text/javascript" src = "./ViewController.js"></script>
+        <script type = "text/javascript" src = "./App.js"></script>
+        <script type = "text/javascript" src = "./Playground.js"></script>
         <style>
             .console-wrapper{
                 overflow: auto;
@@ -23,68 +27,135 @@
                 opacity: 0.5;
                 padding-right: 0.5em;
             }
+            .alert{
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 50%;
+                margin: auto;
+                z-index: 99999;
+            }
         </style>
     </head>
     <body class="container-fluid mt-3">
     <div class="container">
         <div class="row">
             <div class="col">
-                <p class="h1">Cupix Player Playground</p>
+                <p class="h2 text-center">Cupix Player Playground</p>
+            </div>
+        </div>
+
+        <!-- Toolbar menu -->
+        <div class="row justify-content-md-center">
+            <div class="col col-12 p-0">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <form class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="text" id="txt-player-url" placeholder="Published 3D Tour URL" aria-label="Published 3D Tour URL" aria-describedby="btn-open" value="https://players.cupix.com/p/bUVnYXBp">
+                                <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="btn-open">Open</button>
+                            </form>
+                        </li>
+                        <li class="nav-item ml-3">
+                            <div class="input-group mb-1">
+                                <input type="text" class="form-control" id="txt-active-section">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Section</button>
+                                    <div class="dropdown-menu" id="setion-list">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Command</a>
+                            <div class="dropdown-menu" id="drop-command" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item" id="add-box" href='#'>Add Box</a>
+                                <a class="dropdown-item" id="add-dim" href='#'>Dist b/w Panos</a>
+                                <a class="dropdown-item" id="add-pushpin" href='#add-pushpin-modal' data-toggle="modal">Add Pushpin</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="ui-cancel" href='#ui-measure-floor'>Measure - Pick Floor Method</a>
+                                <a class="dropdown-item" id="ui-cancel" href='#ui-measure-2pano'>Measure - Two Pano Method</a>
+                                <a class="dropdown-item" id="ui-cancel" href='#ui-cancel'>Cancel</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
+                            <a class="custom-control custom-checkbox nav-link" href="#">
+                                <input type="checkbox" class="custom-control-input" id="btn-show-help" checked="">
+                                <label class="custom-control-label" for="btn-show-help">Show Help in Player</label>
+                            </a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="custom-control custom-checkbox nav-link" href="#">
+                                <input type="checkbox" class="custom-control-input" id="btn-sync">
+                                <label class="custom-control-label" for="btn-sync">Sync Cam</label>
+                            </a>
+                        </li>   
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="row justify-content-md-center">
-          <div class="col col-10">
-                <div class="input-group mb-1">
-                    <input type="text" class="form-control" id="txt-player-url" placeholder="Published 3D Tour URL" 
-                    aria-label="Published 3D Tour URL" aria-describedby="btn-open" value="https://players.cupix.com/p/bUVnYXBp">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="btn-open">Open</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="col col-8">
-                <div class="input-group mb-1">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Section</button>
-                        <div class="dropdown-menu" id="setion-list">
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" id="txt-active-section">
-                </div>
-            </div>
-            <div class="col col-1">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Test</button>
-                <div class="dropdown-menu" id="drop-add">
-                    <a class="dropdown-item" id="add-box" href='#'>Add Box</a>
-                    <a class="dropdown-item" id="add-dim" href='#'>Dist b/w Panos</a>
-                </div>
-            </div>
-            <div class="col col-1">
-                <button type="button" class="btn btn-primary" id="btn-sync" data-toggle="button" aria-pressed="false" autocomplete="off">Sync Cam</button>
-            </div>
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="col col-5 shadow mr-3 mb-3 bg-white rounded embed-responsive embed-responsive-4by3">
+            <div class="col col-6 shadow mb-3 bg-white rounded embed-responsive embed-responsive-4by3">
                 <iframe id="embedded-player" class="embed-responsive-item" src="https://players.cupix.com/p/bUVnYXBp" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
             </div>
-            <div class="col col-5 shadow rounded mb-3 bg-white p-0" id="external-3Dviewer-container">    
+            <div class="col col-6 shadow rounded mb-3 bg-white p-0" id="external-3Dviewer-container">
+                <div id="obj-tree">
+                </div>    
             </div>
         </div>
-        <div class="row justify-content-md-center" style="height:30%">
-            <div class="console-wrapper col col-5 bg-dark pt-1 mr-3 border border-primary"">
-                <p class="h5 text-warning">Events from the Player</p>
+        <div class="row justify-content-md-center" style="height:30%; overflow:auto">
+            <div class="console-wrapper col col-6 text-white bg-primary pt-1 border border-primary"">
+                <p class="h5">Events from the Player</p>
                 <p id="txt-console-left" class="console mt-1 mb-1 text-white text-monospace"></p>
             </div>
-            <div class="console-wrapper col col-5 bg-dark pt-1 border border-primary" id="txt-console-right-wrapper">
-                <p class="h5 text-warning">Console</p>
-                <p id="txt-console-right" class="console mt-1 mb-1 text-white text-monospace"></p>
+            <div class="console-wrapper col col-6 pt-1 border border-primary" id="txt-console-right-wrapper">
+                <p class="h5">Console</p>
+                <p id="txt-console-right" class="console mt-1 mb-1 text-monospace"></p>
             </div>
         </div>
     </div>
-    <!--
-    <canvas id="canvas" width="1000" height="500"></canvas>
-    !-->
+
+    <!-- Pushpin input modal dialog -->
+    <div class="modal fade" id="add-pushpin-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add a Pushpin</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="pushpin-title" class="col-form-label">Title:</label>
+                  <input type="text" class="form-control" id="pushpin-title">
+                </div>
+                <div class="form-group">
+                  <label for="pushpin-body" class="col-form-label">Description (HTML formatting supported):</label>
+                  <textarea class="form-control" id="pushpin-body"></textarea>
+                </div>
+                <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="show-leg" checked="">
+                          <label class="custom-control-label" for="show-leg">Show leader line </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="auto-anchor" checked="">
+                          <label class="custom-control-label" for="auto-anchor">Auto-gen anchor</label>
+                        </div>
+                      </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="btn-add-pushpin" data-dismiss="modal">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>
