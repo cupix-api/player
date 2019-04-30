@@ -29,3 +29,5 @@
   string script = string.Format("window.postMessage('{0}','*')", event_str); 
   webChromeBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
 ```
+* How to reinstall Nuget Packages
+* https://docs.microsoft.com/ko-kr/nuget/consume-packages/reinstalling-and-updating-packages

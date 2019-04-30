@@ -69,15 +69,13 @@ namespace Send_and_Receive_Messages
                     }
                     break;
                 case "TransitHandler":
-                    msg = "Pano transit to " + player_event_args.id + " " + type;
-                    
                     if (type.Equals("PanoStarted"))
                     {
-
+                        msg = "Pano transit to " + player_event_args.id + " " + type;
                     }
                     else if (type.Equals("PanoCompleted"))
                     {
-
+                        msg = "Pano transit to " + player_event_args.id + " " + type;
                     }
                     break;
                 case "ObjectHandler":
