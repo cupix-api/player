@@ -8,6 +8,7 @@ class App {
         App._transform_control = null;
 
         App._toast_visible = true;
+        App._picking_options_visible = true;
     }
 
     static addDim() {
@@ -17,9 +18,21 @@ class App {
 
     static addBox() {
         let alpha = App.getRandomNumber(0.8, 1.0);
-        const box = new Box3D(App.getRandomNumber(0.5, 1.5), App.getRandomNumber(0.5, 1.5), App.getRandomNumber(0.5, 1.5), App.getRandomColor(), alpha);
+        const box = new Box3D(
+            App.getRandomNumber(0.5, 1.5),
+            App.getRandomNumber(0.5, 1.5),
+            App.getRandomNumber(0.5, 1.5),
+            App.getRandomColor(), alpha);
+
         const group_center = new THREE.Vector3();
         App._view_controller.activeGroup.boundingBox.getCenter(group_center);
+
+        const range = 1.0;
+        group_center.x += App.getRandomNumber(-range, range);
+        group_center.y += App.getRandomNumber(-range, range);
+        group_center.z += App.getRandomNumber(-range, range);
+
+
         box.locate(group_center.x, group_center.y, group_center.z);
 
         App._custom_obj_manager.add(box);
@@ -49,6 +62,16 @@ class App {
         this._toast_visible = !this._toast_visible;
     }
 
+    static togglePickingOptionsVisibility() {
+        const event_to_send = App.createEventToPlayer("UIManager", "ConfigPickingOptions")
+
+        event_to_send.args = {
+            visible: !this._picking_options_visible
+        }
+        App.emitEventToPlayer(event_to_send);
+        this._picking_options_visible = !this._picking_options_visible;
+    }
+
     static measureDim(mode) {
         const event_to_send = App.createEventToPlayer("UIManager", "Measure")
 
@@ -56,6 +79,75 @@ class App {
             mode: mode,
             snap_on_dim: true,
             axis_aligned: true
+        }
+        App.emitEventToPlayer(event_to_send);
+    }
+
+    static pickPoint(mode) {
+        const event_to_send = App.createEventToPlayer("UIManager", "PickPoint")
+
+        event_to_send.args = {
+            mode: mode
+        }
+        App.emitEventToPlayer(event_to_send);
+    }
+
+    static getCamera() {
+        const event_to_send = App.createEventToPlayer("Camera", "GetCurrentCamera")
+
+        event_to_send.args = {
+        }
+        App.emitEventToPlayer(event_to_send);
+    }
+
+    static getAllModels() {
+        const event_to_send = App.createEventToPlayer("ObjectHandler", "GetAllModels")
+
+        event_to_send.args = {
+        }
+        App.emitEventToPlayer(event_to_send);
+
+        const mgr = this._custom_obj_manager && this._custom_obj_manager._name_table;
+        if (mgr) {
+            let box;
+            Object.keys(mgr).forEach(key => {
+                if (box == undefined) {
+                    model = mgr[key];
+                    if (model instanceof Box3D) {
+                        box = model;
+                    }
+                }
+            });
+
+            if (box) {
+                const event_to_send = App.createEventToPlayer("ObjectHandler", "GetModel")
+
+                event_to_send.args = {
+                    id: box._cupixID
+                }
+                App.emitEventToPlayer(event_to_send);
+            }
+        }
+    }
+
+    static setViewpoint(viewpoint) {
+        this._viewpoint = viewpoint;
+    }
+
+    static saveViewpoint() {
+        const event_to_send = App.createEventToPlayer("TransitHandler", "GetCurrentViewpoint")
+
+        event_to_send.args = {
+        }
+        App.emitEventToPlayer(event_to_send);
+    }
+
+    static loadViewpoint() {
+        if (this._viewpoint == undefined) return;
+        const event_to_send = App.createEventToPlayer("TransitHandler", "ChangeViewpoint")
+
+        event_to_send.args = {
+            viewpoint: this._viewpoint
         }
         App.emitEventToPlayer(event_to_send);
     }
@@ -78,7 +170,6 @@ class App {
 
     static searchCustomObj(keyword) {
         if (this._custom_obj_manager)
-
             return this._custom_obj_manager.search(keyword);
         return null;
     }
@@ -143,7 +234,8 @@ class App {
     }
 
     static getRandomNumber(start, end) {
-        return Math.floor(Math.random() * end) + start
+        // return Math.floor(Math.random() * end) + start
+        return Math.min(start, end) + (Math.abs(start - end) * Math.random());
     }
 
     static getRandomString(n) {

@@ -16,6 +16,10 @@ $(document).ready(function () {
         const event_args = event.data.args;
         const event_args_str = JSON.stringify(event_args);
 
+        if (event_sender != "Camera" && event_type != "Changed") {
+            console.log(event_sender, event_type, event_args);
+        }
+
         // Show the event info in the left console
         App.leftConsole.innerHTML =
             "<span class='prefix'>Sender:</span>" + event_sender + App.CR +
@@ -49,6 +53,8 @@ $(document).ready(function () {
                 } else if (event_type == "GroupCompleted") {
                     if (App.viewController)
                         App.viewController.activeGroup = event_args.id;
+                } else if (event_type == "CurrentViewpoint") {
+                    App.setViewpoint(event_args.viewpoint);
                 }
                 break;
             case "Camera":
@@ -84,6 +90,7 @@ $(document).ready(function () {
 
     $("#btn-show-help").on('click', event => {
         App.toggleToastMessageVisibility();
+        App.togglePickingOptionsVisibility();
     });
 
     $("#drop-command").on('click', '.dropdown-item', event => {
@@ -107,6 +114,34 @@ $(document).ready(function () {
             case "Measure - Two Pano Method":
                 App.printToConsole("Measure dist in the Player by picking points using 2-pano matching point method.");
                 App.measureDim("pick_2_panos");
+                break;
+            case "Pick Floor":
+                App.printToConsole("Pick point on the floor.");
+                App.pickPoint("pick_on_floor");
+                break;
+            case "Pick Two Pano":
+                App.printToConsole("Pick point using 2-pano matching point method.");
+                App.pickPoint("pick_2_panos");
+                break;
+            case "Pick Box":
+                App.printToConsole("Pick point on a box.");
+                App.pickPoint("pick_on_box");
+                break;
+            case "Get Camera":
+                App.printToConsole("Get current camera.");
+                App.getCamera();
+                break;
+            case "Get All Models":
+                App.printToConsole("Get all models.");
+                App.getAllModels();
+                break;
+            case "Save Viewpoint":
+                App.printToConsole("Save current viewpoint.");
+                App.saveViewpoint();
+                break;
+            case "Load Viewpoint":
+                App.printToConsole("Load viewpoint.");
+                App.loadViewpoint();
                 break;
             case "Cancel":
                 App.printToConsole("Cancel measurement.");
