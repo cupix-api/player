@@ -62,8 +62,8 @@ class App {
         this._toast_visible = !this._toast_visible;
     }
 
-    static togglePickingOptionsVisibility() {
-        const event_to_send = App.createEventToPlayer("UIManager", "ConfigPickingOptions")
+    static togglePickingOptionVisibility() {
+        const event_to_send = App.createEventToPlayer("UIManager", "ConfigPickingOption")
 
         event_to_send.args = {
             visible: !this._picking_options_visible

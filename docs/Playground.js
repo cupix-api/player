@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     $("#btn-show-help").on('click', event => {
         App.toggleToastMessageVisibility();
-        App.togglePickingOptionsVisibility();
+        App.togglePickingOptionVisibility();
     });
 
     $("#drop-command").on('click', '.dropdown-item', event => {
